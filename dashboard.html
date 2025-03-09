@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konfirmasi Pembelian | Cosmic Melody Festival</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1a1040;
+            --secondary: #4527a0;
+            --accent: #7c4dff;
+            --accent-glow: #9d68ff;
+            --light: #f5f3ff;
+            --dark: #120b30;
+            --success: #00e676;
+            --warning: #ffab00;
+            --danger: #ff3d71;
+            --gray: #9e9eb3;
+            --cosmic-gradient: linear-gradient(135deg, #1a1040, #4527a0, #7c4dff);
+            --cosmic-glow: 0 0 15px rgba(124, 77, 255, 0.5);
+            --star-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins';
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; }
+            50% { opacity: 1; }
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            line-height: 1.6;
+            background-image: 
+                radial-gradient(circle at 25% 30%, rgba(124, 77, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 75% 70%, rgba(124, 77, 255, 0.2) 0%, transparent 50%),
+                radial-gradient(circle at 50% 40%, rgba(69, 39, 160, 0.3) 0%, transparent 40%);
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: radial-gradient(var(--star-color) 1px, transparent 1px);
+            background-size: 100px 100px;
+            z-index: -1;
+        }
+        
+        .star {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background-color: white;
+            border-radius: 50%;
+            opacity: 0;
+            z-index: -1;
+        }
+        
+        .navbar {
+            background: var(--cosmic-gradient);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--cosmic-glow), 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo::before {
+            content: '🚀';
+            margin-right: 10px;
+            font-size: 2rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent-glow);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--accent-glow);
+            transition: width 0.3s;
+            box-shadow: 0 0 10px var(--accent-glow);
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+        
+        .dashboard-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .dashboard-header h1 {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 15px var(--accent);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dashboard-header h1::before,
+        .dashboard-header h1::after {
+            content: '✨';
+            position: absolute;
+            top: 0;
+            font-size: 2rem;
+        }
+        
+        .dashboard-header h1::before {
+            left: -40px;
+            animation: pulse 3s infinite;
+        }
+        
+        .dashboard-header h1::after {
+            right: -40px;
+            animation: pulse 3s infinite 1.5s;
+        }
+        
+        .dashboard-header p {
+            font-size: 1.2rem;
+            color: var(--accent-glow);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+        
+        .card {
+            background: rgba(26, 16, 64, 0.8);
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 30px rgba(124, 77, 255, 0.2);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            backdrop-filter: blur(10px);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(124, 77, 255, 0.4);
+        }
+        
+        .card-header {
+            border-bottom: 1px solid rgba(124, 77, 255, 0.3);
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .card-header h2 {
+            color: white;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px rgba(124, 77, 255, 0.5);
+        }
+        
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status-success {
+            background: linear-gradient(135deg, #00b09b, #00e676);
+            animation: pulse 3s infinite;
+        }
+        
+        .status-pending {
+            background: linear-gradient(135deg, #ff9800, #ffab00);
+        }
+        
+        .status-failed {
+            background: linear-gradient(135deg, #ff416c, #ff3d71);
+        }
+        
+        .ticket-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .detail-group {
+            margin-bottom: 1rem;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: var(--accent);
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+            letter-spacing: 1px;
+        }
+        
+        .detail-value {
+            font-size: 1.1rem;
+            color: white;
+        }
+        
+        .vip-ticket-card {
+            background: linear-gradient(135deg, #1a1040, #4527a0, #7c4dff);
+            color: white;
+            border-radius: 15px;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 50px rgba(124, 77, 255, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .vip-ticket-inner {
+            position: relative;
+            z-index: 1;
+            padding: 2rem;
+        }
+        
+        .vip-ticket-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/api/placeholder/800/800');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .cosmic-decoration {
+            position: absolute;
+            z-index: 0;
+        }
+        
+        .cosmic-planet {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #9d68ff, #4527a0);
+            box-shadow: 0 0 20px rgba(157, 104, 255, 0.5);
+            top: -30px;
+            right: -30px;
+        }
+        
+        .cosmic-ring {
+            position: absolute;
+            width: 140px;
+            height: 30px;
+            border-radius: 50%;
+            border: 4px solid rgba(157, 104, 255, 0.3);
+            top: 5px;
+            right: -50px;
+            transform: rotate(-30deg);
+        }
+        
+        .cosmic-astronaut {
+            position: absolute;
+            bottom: -20px;
+            left: -40px;
+            width: 120px;
+            height: 120px;
+            background-image: url('/api/placeholder/120/120');
+            background-size: contain;
+            background-repeat: no-repeat;
+            opacity: 0.7;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        .vip-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #ffd700, #ff9d00);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            z-index: 2;
+            transform: rotate(15deg);
+        }
+        
+        .vip-badge::before {
+            content: '';
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 2px dashed rgba(255, 255, 255, 0.5);
+            animation: rotate 20s linear infinite;
+        }
+        
+        .ticket-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .ticket-title {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(124, 77, 255, 0.8);
+        }
+        
+        .ticket-number {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .ticket-info {
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 1;
+            background: rgba(26, 16, 64, 0.6);
+            padding: 1.5rem;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+        }
+        
+        .ticket-qr {
+            text-align: center;
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            width: 150px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+        
+        .ticket-qr::after {
+            content: 'SCAN ME';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .countdown-container {
+            text-align: center;
+            padding: 1.5rem;
+        }
+        
+        .countdown-heading {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent-glow);
+        }
+        
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+        
+        .countdown-item {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            min-width: 80px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(124, 77, 255, 0.2);
+            border: 1px solid rgba(124, 77, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .countdown-item::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: rotate(30deg);
+            animation: float 4s infinite;
+            z-index: 0;
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+            display: block;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(124, 77, 255, 0.5);
+        }
+        
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .cosmic-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #7c4dff, #4527a0);
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), 0 0 20px rgba(124, 77, 255, 0.3);
+            z-index: 1;
+        }
+        
+        .cosmic-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s;
+            z-index: -1;
+        }
+        
+        .cosmic-btn:hover::before {
+            left: 100%;
+        }
+        
+        .cosmic-btn:hover {
+            background: linear-gradient(135deg, #9d68ff, #7c4dff);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3), 0 0 30px rgba(124, 77, 255, 0.5);
+        }
+        
+        .cosmic-btn-block {
+            display: block;
+            width: 100%;
+        }
+        
+        .cosmic-btn-secondary {
+            background: linear-gradient(135deg, #4527a0, #1a1040);
+        }
+        
+        .cosmic-btn-secondary:hover {
+            background: linear-gradient(135deg, #6237d0, #4527a0);
+        }
+        
+        .cosmic-btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent);
+            color: var(--accent);
+            box-shadow: 0 0 20px rgba(124, 77, 255, 0.2);
+        }
+        
+        .cosmic-btn-outline:hover {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .event-info {
+            margin-top: 1.5rem;
+        }
+        
+        .info-tabs {
+            display: flex;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.3);
+        }
+        
+        .info-tab {
+            padding: 0.8rem 1.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            border-bottom: 2px solid transparent;
+            color: var(--gray);
+        }
+        
+        .info-tab.active {
+            color: var(--accent-glow);
+            border-bottom: 2px solid var(--accent-glow);
+            box-shadow: 0 5px 10px -5px rgba(124, 77, 255, 0.5);
+        }
+        
+        .tab-content {
+            padding: 1rem 0;
+        }
+        
+        .tab-pane {
+            display: none;
+        }
+        
+        .tab-pane.active {
+            display: block;
+        }
+        
+        .location-info {
+            margin-bottom: 1.5rem;
+        }
+        
+        .location-map {
+            height: 200px;
+            background-color: rgba(26, 16, 64, 0.5);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2), inset 0 0 30px rgba(124, 77, 255, 0.3);
+        }
+        
+        .location-map img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+        
+        .location-instructions {
+            margin-top: 1rem;
+        }
+        
+        .cosmic-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .cosmic-list li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid rgba(124, 77, 255, 0.2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .cosmic-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .cosmic-list li::before {
+            content: '🌟';
+            margin-right: 0.8rem;
+        }
+        
+        .allowed {
+            color: var(--success);
+        }
+        
+        .allowed::before {
+            content: '✓' !important;
+            color: var(--success);
+            font-weight: bold;
+            margin-right: 0.8rem;
+        }
+        
+        .not-allowed {
+            color: var(--danger);
+        }
+        
+        .not-allowed::before {
+            content: '✕' !important;
+            color: var(--danger);
+            font-weight: bold;
+            margin-right: 0.8rem;
+        }
+        
+        .schedule-timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+        
+        .timeline-item:last-child {
+            padding-bottom: 0;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent), transparent);
+            box-shadow: 0 0 8px var(--accent);
+        }
+        
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            left: -34px;
+            top: 10px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            box-shadow: 0 0 10px var(--accent), 0 0 20px var(--accent);
+        }
+        
+        .timeline-time {
+            font-weight: bold;
+            color: var(--accent-glow);
+            margin-bottom: 0.3rem;
+        }
+        
+        .timeline-event {
+            margin-bottom: 0.5rem;
+            font-weight: bold;
+        }
+        
+        .timeline-description {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .holographic-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.05) 45%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                rgba(255, 255, 255, 0.05) 55%, 
+                transparent);
+            z-index: 2;
+            background-size: 200% 200%;
+            animation: holographic 5s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes holographic {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .ticket-details {
+                grid-template-columns: 1fr;
+            }
+            
+            .countdown {
+                flex-wrap: wrap;
+            }
+            
+            .countdown-item {
+                flex: 1;
+                min-width: auto;
+            }
+            
+            .nav-container {
+                flex-direction: column;
+            }
+            
+            .nav-links {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .nav-links li {
+                margin: 0;
+            }
+        }
+
+        /* Create stars */
+        .star {
+            position: fixed;
+            background-color: white;
+            width: 2px;
+            height: 2px;
+            border-radius: 50%;
+            animation: twinkle 4s infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Stars background -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create stars
+            for(let i = 0; i < 200; i++) {
+                let star = document.createElement('div');
+                star.className = 'star';
+                
+                // Random position
+                star.style.left = `${Math.random() * 100}%`;
+                star.style.top = `${Math.random() * 100}%`;
+                
+                // Random size
+                const size = Math.random() * 3;
+                star.style.width = `${size}px`;
+                star.style.height = `${size}px`;
+                
+                // Random animation delay
+                star.style.animationDelay = `${Math.random() * 4}s`;
+                star.style.animationDuration = `${2 + Math.random() * 3}s`;
+                
+                document.body.appendChild(star);
+            }
+            
+            // Tab functionality
+            const tabs = document.querySelectorAll('.info-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Remove active class from all tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    tab.classList.add('active');
+                    
+                    // Hide all tab panes
+                    document.querySelectorAll('.tab-pane').forEach(pane => {
+                        pane.classList.remove('active');
+                    });
+                    
+                    // Show clicked tab pane
+                    const tabId = tab.getAttribute('data-tab');
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+        });
+    </script>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">Cosmic Melody Festival</a>
+            <ul class="nav-links">
+                <li><a href="index.html#beranda">Beranda</a></li>
+                <li><a href="index.html#jadwal">Jadwal</a></li>
+                <li><a href="index.html#lineup">Line Up</a></li>
+                <li><a href="index.html#tiket">Tiket</a></li>
+                <li><a href="index.html#daftar">Daftar</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <!-- Dashboard -->
+    <div class="dashboard-container">
+        <div class="dashboard-header">
+            <h1>Konfirmasi Pembelian</h1>
+            <p>Anda telah terdaftar untuk petualangan musik kosmik terbesar tahun 2025!</p>
+        </div>
+        
+        <div class="dashboard-grid">
+            <!-- Left Column -->
+            <div class="main-content">
+                <!-- Status Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Status Pembayaran</h2>
+                        <span class="status-badge status-success">Berhasil</span>
+                    </div>
+                    
+                    <div class="ticket-details">
+                        <div class="detail-group">
+                            <div class="detail-label">Nomor Order</div>
+                            <div class="detail-value">CMF-25030801</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Tanggal Pembelian</div>
+                            <div class="detail-value">8 Maret 2025, 14:32 WIB</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Metode Pembayaran</div>
+                            <div class="detail-value">Kartu Kredit</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Total Pembayaran</div>
+                            <div class="detail-value">Rp 2.500.000</div>
+                        </div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <a href="#" class="cosmic-btn cosmic-btn-block">Download Invoice</a>
+                    </div>
+                </div>
+                
+                <!-- Ticket Card -->
+                <div class="ticket-card">
+                    <div class="ticket-header">
+                        <div class="ticket-title">VIP Pass</div>
+                        <div class="ticket-number">MB25-VIP-12345</div>
+                    </div>
+                    
+                    <div class="ticket-info">
+                        <div class="detail-group">
+                            <div class="detail-label">Nama</div>
+                            <div class="detail-value">Ahmad Rizki</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Tanggal</div>
+                            <div class="detail-value">15-17 Maret 2025</div>
+                        </div>
+                        
+                        <div class="detail-group">
+                            <div class="detail-label">Venue</div>
+                            <div class="detail-value">GBK Main Stadium, Jakarta</div>
+                        </div>
+                    </div>
+                    
+                
+                
+                <!-- Countdown -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Hitung Mundur ke Konser</h2>
+                    </div>
+                    
+                    <div class="countdown-container">
+                        <div class="countdown-heading">Melodi Bersama 2025 dimulai dalam:</div>
+                        <div class="countdown">
+                            <div class="countdown-item">
+                                <span class="countdown-number">7</span>
+                                <span class="countdown-label">Hari</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number">5</span>
+                                <span class="countdown-label">Jam</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number">23</span>
+                                <span class="countdown-label">Menit</span>
+                            </div>
+                            <div class="countdown-item">
+                                <span class="countdown-number">42</span>
+                                <span class="countdown-label">Detik</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Informasi Acara -->
+                <div class="card event-info">
+                    <div class="card-header">
+                        <h2>Informasi & Persiapan Konser</h2>
+                    </div>
+                    
+                    <div class="info-tabs">
+                        <div class="info-tab active" data-tab="location">Lokasi</div>
+                        <div class="info-tab" data-tab="rules">Peraturan</div>
+                        <div class="info-tab" data-tab="schedule">Jadwal Acara</div>
+                    </div>
+                    
+                    <div class="tab-content">
+                        <!-- Lokasi -->
+                        <div class="tab-pane active" id="tab-location">
+                            <div class="location-info">
+                                <h3>Gelora Bung Karno Main Stadium</h3>
+                                <p>Jl. Pintu Satu Senayan, Jakarta Pusat, 10270</p>
+                                
+                                <div class="location-map">
+                                    <img src="/api/placeholder/800/400" alt="Peta Lokasi Konser">
+                                </div>
+                                
+                                <div class="location-instructions">
+                                    <h4>Cara Mencapai Lokasi:</h4>
+                                    <ul class="rules-list">
+                                        <li>Transportasi umum: MRT Jakarta - Stasiun GBK (10 menit jalan kaki)</li>
+                                        <li>TransJakarta - Halte GBK (5 menit jalan kaki)</li>
+                                        <li>Grab/Gojek: Gunakan pintu drop-off di Gate 5</li>
+                                        <li>Parkir kendaraan pribadi tersedia di Basement GBK (tiket parkir terpisah)</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Peraturan -->
+                        <div class="tab-pane" id="tab-rules">
+                            <h3>Barang yang Diperbolehkan:</h3>
+                            <ul class="rules-list">
+                                <li class="allowed">Tas ransel kecil / tas selempang (max. 30x20x10 cm)</li>
+                                <li class="allowed">Kamera pocket (non-professional)</li>
+                                <li class="allowed">Powerbank</li>
+                                <li class="allowed">Botol air minum (kosong, akan diisi di area konser)</li>
+                                <li class="allowed">Jas hujan disposable</li>
+                            </ul>
+                            
+                            <h3>Barang yang Dilarang:</h3>
+                            <ul class="rules-list">
+                                <li class="not-allowed">Kamera profesional dengan lensa yang dapat dilepas</li>
+                                <li class="not-allowed">Makanan dan minuman dari luar</li>
+                                <li class="not-allowed">Senjata tajam, laser pointer, atau benda berbahaya lainnya</li>
+                                <li class="not-allowed">Obat-obatan terlarang dan minuman beralkohol</li>
+                                <li class="not-allowed">Payung berujung runcing</li>
+                                <li class="not-allowed">Drone atau peralatan recording profesional</li>
+                            </ul>
+                            
+                            <h3>Tata Tertib Konser:</h3>
+                            <ul class="rules-list">
+                                <li>Pakai masker jika sedang merasa tidak enak badan</li>
+                                <li>Bawa kartu identitas dan e-ticket yang sudah dicetak</li>
+                                <li>Datang minimal 2 jam sebelum acara dimulai untuk proses check-in</li>
+                                <li>Ikuti arahan petugas dan panitia</li>
+                                <li>Jaga barang bawaan masing-masing</li>
+                                <li>Buang sampah pada tempatnya</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- Jadwal -->
+                        <div class="tab-pane" id="tab-schedule">
+                            <h3>Jadwal Acara Hari 1 (Jumat, 15 Maret 2025)</h3>
+                            <div class="schedule-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-time">16:00 WIB</div>
+                                    <div class="timeline-event">Gate Dibuka</div>
+                                    <div class="timeline-description">Check-in dan validasi tiket dimulai</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">17:30 WIB</div>
+                                    <div class="timeline-event">Pre-show Booth & Aktivitas</div>
+                                    <div class="timeline-description">Merchandise, food court, dan area aktivitas dibuka</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">19:00 WIB</div>
+                                    <div class="timeline-event">Opening Act</div>
+                                    <div class="timeline-description">Penampilan band pendatang baru</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">22:00 WIB</div>
+                                    <div class="timeline-event">Penutupan Hari 1</div>
+                                </div>
+                            </div>
+                            
+                            <h3>Jadwal Acara Hari 2 (Sabtu, 16 Maret 2025)</h3>
+                            <div class="schedule-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-time">15:00 WIB</div>
+                                    <div class="timeline-event">Gate Dibuka</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">18:00 WIB</div>
+                                    <div class="timeline-event">Penampilan Pembuka</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">19:30 WIB</div>
+                                    <div class="timeline-event">Tulus</div>
+                                    <div class="timeline-description">Special performance</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">21:00 WIB</div>
+                                    <div class="timeline-event">Kahitna</div>
+                                    <div class="timeline-description">Main performance</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">23:00 WIB</div>
+                                    <div class="timeline-event">Penutupan Hari 2</div>
+                                </div>
+                            </div>
+                            
+                            <h3>Jadwal Acara Hari 3 (Minggu, 17 Maret 2025)</h3>
+                            <div class="schedule-timeline">
+                                <div class="timeline-item">
+                                    <div class="timeline-time">15:00 WIB</div>
+                                    <div class="timeline-event">Gate Dibuka</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">17:00 WIB</div>
+                                    <div class="timeline-event">Special Guest Performance</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">19:00 WIB</div>
+                                    <div class="timeline-event">Juicy Luicy</div>
+                                    <div class="timeline-description">Closing performance</div>
+                                </div>
+                                
+                                <div class="timeline-item">
+                                    <div class="timeline-time">21:30 WIB</div>
+                                    <div class="timeline-event">Penutupan Festival</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column -->
+            <div class="sidebar">
+                <!-- Reminder Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Reminder Konser</h2>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Next Step</div>
+                        <div class="detail-value">Download E-Ticket dan simpan di perangkat Anda</div>
+                    </div>
+                    
+                    <ul class="rules-list">
+                        <li>E-ticket harus ditunjukkan saat check-in (cetak atau digital)</li>
+                        <li>Bawa kartu identitas untuk verifikasi</li>
+                        <li>VIP Pass memberikan akses ke area khusus dan Meet & Greet</li>
+                        <li>Tiket tidak dapat dikembalikan atau ditukar</li>
+                    </ul>
+                    
+                    
+                </div>
+                
+                <!-- FAQ Card -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Pertanyaan Umum</h2>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Bagaimana cara menukarkan tiket fisik?</div>
+                        <div class="detail-value">Tunjukkan e-ticket dan ID di booth tiket pada hari konser.</div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Apa yang harus dilakukan jika tiket hilang?</div>
+                        <div class="detail-value">Hubungi customer service kami di nomor 021-5551234 atau email support@melodibersama.com</div>
+                    </div>
+                    
+                    <div class="detail-group">
+                        <div class="detail-label">Apakah tiket bisa dipindahtangankan?</div>
+                        <div class="detail-value">Ya, tetapi nama pada tiket akan tetap sesuai pembelian awal.</div>
+                    </div>
+                    
+                   
+                </div>
+            </div>
+        </div>
+    </div>
